@@ -1,0 +1,63 @@
+version: "2"
+services:
+  web:
+    #restart: always  # restart would run migrations (entrypoint)
+    build: ./web/  # use Dockerfile from directory
+    expose:
+      # expose port 8000 to linked services, so nginx can proxy incoming requests
+      # to this container. "expose" doesn't expose port to host machine
+      - "8000"
+    depends_on:
+      # django db connections require postgres db to exist before starting app
+      - postgres
+    links:
+      # containers of linked services are reachable via a hostname specified
+      # like: <linked_service_name>:<hostname_alias>
+      - postgres:postgres
+      - redis:redis
+    env_file: live.env  # environment variables for web container in .env file
+    volumes:
+      - ./web:/data/web  # mount local file system to container file system
+    # runs gunicorn application server (runs migrations and collects static too)
+    entrypoint: /data/web/entrypoint.sh
+  
+  nginx:
+    restart: always  # if container crashes, restart (always up)
+    build: ./nginx/  # use dockerfile in nginx dir
+    ports:
+      # expose port 80 to host machine and target container port 80 (which 
+      # nginx listens on for requests)
+      - "80:80"
+    volumes_from:
+      # load volumes from web container to serve static files for web app
+      - web
+    links:
+      # see nginx site-enabled/dockering proxing requests to http://web:8000
+      - web:web
+  
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes_from:
+      - data
+    volumes:
+      # the postgres:latest docker image auto loads all scripts in the
+      # /docker-entrypoint-initdb.d dir. Initialize your DB here with a script
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
+      #- ./backups/postgresql:/backup
+    env_file:
+      - live.env
+  
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
+  
+  data:
+    restart: always
+    image: alpine
+    volumes:
+      - /var/lib/postgresql
+    # "true" will be a noop command, but will keep the container running
+    command: "true"
