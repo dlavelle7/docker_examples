@@ -1,4 +1,4 @@
 *.swp
 *.pyc
 __pycache__
-db.splite3
+*db.sqlite3
