@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    build: .  # use image from Dockerfile in current directory
+    ports:
+     - "5000:5000"  # forwards and exposes port 5000 on the container to port 5000 on the host machine (default flask)
+    volumes:
+     - .:/code  # bind mount, mount current dir to /code in container, don't need to rebuild to see changes
+  redis:
+    image: "redis:alpine"  # pulled from Dockerhub
