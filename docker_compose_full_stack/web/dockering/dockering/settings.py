@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'gv^7xn&$b$^rioy$u1$iqbhti3z!6w8q4nl19q_g(ejyeefr8^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -137,8 +137,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+# dir 'collectsatic' will copy static files to, nginx config to serve from here
+STATIC_ROOT = '/data/web/static'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+# URL to use when requesting static files from static_root (see nginx location)
 STATIC_URL = '/static/'

@@ -1,4 +1,4 @@
-version: "2"
+version: "2.1"
 services:
   web:
     #restart: always  # restart would run migrations (entrypoint)
@@ -9,7 +9,8 @@ services:
       - "8000"
     depends_on:
       # django db connections require postgres db to exist before starting app
-      - postgres
+      postgres:
+        condition: service_healthy
     links:
       # containers of linked services are reachable via a hostname specified
       # like: <linked_service_name>:<hostname_alias>
@@ -47,6 +48,11 @@ services:
       #- ./backups/postgresql:/backup
     env_file:
       - live.env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "dockering", "-d", "dockering"]
+      interval: 1s
+      timeout: 3s
+      retries: 10
   
   redis:
     restart: always

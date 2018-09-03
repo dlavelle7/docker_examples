@@ -1,12 +1,8 @@
 #!/bin/sh
 
-# TODO
-#echo "Collect static files"
-#/usr/bin/python3 /data/web/dockering/manage.py collectstatic --noinput
-
-# TODO: Replace sleep with healthcheck in compose
-# even though web container depends on postgres container, this sleep is needed
-sleep 3
+# TODO: As filesystem is mounted, this is copying files to local filesystem
+echo "Collect static files"
+/usr/bin/python3 /data/web/dockering/manage.py collectstatic --noinput
 
 echo "Apply database migrations"
 /usr/bin/python3 /data/web/dockering/manage.py migrate

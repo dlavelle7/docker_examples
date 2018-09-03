@@ -13,10 +13,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 # Clean
-RUN apk del -r python3-dev postgresql
+RUN apk del -r python3-dev
 
 # Prepare
-# why do i need this if the volume is mounted by compose???
-#COPY . /data/web/
-
-#RUN mkdir -p dockering/static/admin
+COPY . /data/web/
