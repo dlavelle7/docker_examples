@@ -1,0 +1,13 @@
+version: "2.1"
+services:
+  test:
+    container_name: dockering_test
+    build:
+      context: ./web/  # use 'web' service source code
+      dockerfile: Dockerfile-test  # use alternate dockerfile for testing
+    volumes:
+      - ./web:/code  # mount local file system to container file system
+    # 'stdin_open' & 'tty' allow you to attach to pdb breakpoint
+    stdin_open: true
+    tty: true
+    command: python manage.py test

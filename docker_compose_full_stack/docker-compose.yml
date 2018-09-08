@@ -1,14 +1,17 @@
 version: "2.1"
 services:
   web:
-    #restart: always  # restart would run migrations (entrypoint)
+    # TODO: Move collectstatic & migrate out of entrypoint.sh, as entrypoint
+    # is executed everytime container is restarted.
+    #restart: always
     build: ./web/  # use Dockerfile from directory
+    container_name: dockering_web
     expose:
       # expose port 8000 to linked services, so nginx can proxy incoming requests
       # to this container. "expose" doesn't expose port to host machine
       - "8000"
     depends_on:
-      # django db connections require postgres db to exist before starting app
+      # django db connections required to exist before starting app
       postgres:
         condition: service_healthy
     links:
@@ -18,9 +21,10 @@ services:
       - redis:redis
     env_file: live.env  # environment variables for web container in .env file
     volumes:
-      - ./web:/data/web  # mount local file system to container file system
+      - ./web:/web  # mount local file system to container file system
+      - /staticfiles  # collect static will copy static files to here
     # runs gunicorn application server (runs migrations and collects static too)
-    entrypoint: /data/web/entrypoint.sh
+    entrypoint: /web/entrypoint.sh
   
   nginx:
     restart: always  # if container crashes, restart (always up)
@@ -49,6 +53,7 @@ services:
     env_file:
       - live.env
     healthcheck:
+      # check if postgres port is open and 'dockering' user & database exist
       test: ["CMD", "pg_isready", "-U", "dockering", "-d", "dockering"]
       interval: 1s
       timeout: 3s

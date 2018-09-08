@@ -22,9 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'gv^7xn&$b$^rioy$u1$iqbhti3z!6w8q4nl19q_g(ejyeefr8^'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
 ALLOWED_HOSTS = ["*"]
 
 
@@ -76,6 +73,7 @@ WSGI_APPLICATION = 'dockering.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 if "DB_NAME" in os.environ:
+    DEBUG = False
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -86,24 +84,28 @@ if "DB_NAME" in os.environ:
             'PORT': 5432,  # default postgres port
         }
     }
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://redis:6379/0",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        }
+    }
 else:
+    DEBUG = True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         }
     }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -138,7 +140,7 @@ USE_L10N = True
 USE_TZ = True
 
 # dir 'collectsatic' will copy static files to, nginx config to serve from here
-STATIC_ROOT = '/data/web/static'
+STATIC_ROOT = '/staticfiles'
 
 # URL to use when requesting static files from static_root (see nginx location)
 STATIC_URL = '/static/'

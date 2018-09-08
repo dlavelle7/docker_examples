@@ -1,0 +1,7 @@
+FROM python:3.4-alpine
+
+RUN mkdir -p /code
+COPY . /code/
+WORKDIR /code/dockering
+
+RUN pip install -r requirements_test.txt
