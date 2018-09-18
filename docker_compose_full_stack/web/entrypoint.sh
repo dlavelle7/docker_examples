@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# The container is started, but the user & db might not have been created yet
+# The db container is started but the user & db might not have been created yet
 echo "Wait until web app user & database are created"
 retries="10"
 while [ $retries -gt 0 ]
 do
-    psql -U $DB_USER -d $DB_NAME -h postgres -c "\q"
+    psql -U "${DB_USER}" -d "${DB_NAME}" -h postgres -c 'SELECT NULL AS test'
     if [ $? -eq 0 ]
     then
         echo "Database ready for web app to connect"
@@ -13,6 +13,7 @@ do
     else
         sleep 1
         let "retries--"
+        echo "Database not ready yet, ${retries} left"
     fi
 done
 
