@@ -11,7 +11,7 @@ services:
       # to this container. "expose" doesn't expose port to host machine
       - "8000"
     depends_on:
-      # django db connections required to exist before starting app
+      # django db & user need to be created before we start the web app
       postgres:
         condition: service_healthy
     links:
@@ -52,12 +52,12 @@ services:
       #- ./backups/postgresql:/backup
     env_file:
       - live.env
+    # check web app db & user exist.
     healthcheck:
-      # check if postgres port is open and 'dockering' user & database exist
-      test: ["CMD", "pg_isready", "-U", "dockering", "-d", "dockering"]
-      interval: 1s
+      test: psql dockering -U dockering -c "SELECT 1 FROM pg_roles WHERE rolname='dockering'" && psql dockering -U dockering -c "SELECT 1 FROM pg_database WHERE datname='dockering'"
+      interval: 2s
       timeout: 3s
-      retries: 10
+      retries: 8
   
   redis:
     restart: always
