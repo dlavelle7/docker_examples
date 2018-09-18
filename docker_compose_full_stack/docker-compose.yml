@@ -1,9 +1,6 @@
 version: "2.1"
 services:
   web:
-    # TODO: Move collectstatic & migrate out of entrypoint.sh, as entrypoint
-    # is executed everytime container is restarted.
-    #restart: always
     build: ./web/  # use Dockerfile from directory
     container_name: dockering_web
     expose:
@@ -11,7 +8,6 @@ services:
       # to this container. "expose" doesn't expose port to host machine
       - "8000"
     depends_on:
-      # django db & user need to be created before we start the web app
       postgres:
         condition: service_healthy
     links:
@@ -52,9 +48,9 @@ services:
       #- ./backups/postgresql:/backup
     env_file:
       - live.env
-    # check web app db & user exist.
+    # check db is accepting tcp connections
     healthcheck:
-      test: psql dockering -U dockering -c "SELECT 1 FROM pg_roles WHERE rolname='dockering'" && psql dockering -U dockering -c "SELECT 1 FROM pg_database WHERE datname='dockering'"
+      test: "pg_isready -U postgres"
       interval: 2s
       timeout: 3s
       retries: 8
