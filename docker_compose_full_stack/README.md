@@ -15,12 +15,12 @@ Run Application
 ---------------
 ```
 make build
-make run
+make up
 ```
 
 Run Tests
 ---------
 ```
 make build-test
-make run-test
+make up-test
 ```

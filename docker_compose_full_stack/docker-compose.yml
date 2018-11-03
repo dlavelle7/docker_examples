@@ -4,8 +4,8 @@ services:
     build: ./web/  # use Dockerfile from directory
     container_name: dockering_web
     expose:
-      # expose port 8000 to linked services, so nginx can proxy incoming requests
-      # to this container. "expose" doesn't expose port to host machine
+      # expose port 8000 to linked services, so nginx can proxy incoming
+      # requests to this container. expose doesn't open port to host machine
       - "8000"
     depends_on:
       postgres:
@@ -14,7 +14,7 @@ services:
     volumes:
       - ./web:/web  # mount local file system to container file system
       - /staticfiles  # collect static will copy static files to here
-    # runs gunicorn application server (runs migrations and collects static too)
+    # runs gunicorn application server (runs migrations and collectstatic too)
     entrypoint: /web/entrypoint.sh
   
   nginx:
@@ -32,10 +32,10 @@ services:
     restart: always
     image: postgres:latest
     volumes:
-      # use "data" volume declared below for db data persistence
+      # mount "data" volume to where pg stores db files to persist data
       - type: volume
         source: data
-        target: /var/lib/postgresql
+        target: /var/lib/postgresql/data
       # the postgres:latest docker image auto loads all scripts in the
       # /docker-entrypoint-initdb.d dir. Initialize your DB here with a script
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
@@ -55,6 +55,6 @@ services:
     expose:
       - "6379"
   
-# FIXME: db data not surviving docker-compose down
 volumes:
+  # volume for db data persistence
   data:
