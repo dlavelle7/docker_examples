@@ -13,6 +13,7 @@ Stack
 
 Run Application
 ---------------
+Docker compose commands wrapped in Makefile for convenience:
 ```
 make build
 make up
