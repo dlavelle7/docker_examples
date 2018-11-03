@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.6
 
 RUN apk update && apk add python3 python3-dev postgresql-client \
     postgresql-dev build-base gettext

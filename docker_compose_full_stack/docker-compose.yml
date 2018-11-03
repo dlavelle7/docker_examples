@@ -30,7 +30,7 @@ services:
   
   postgres:
     restart: always
-    image: postgres:latest
+    image: postgres:11.0
     volumes:
       # mount "data" volume to where pg stores db files to persist data
       - type: volume
@@ -51,7 +51,7 @@ services:
   
   redis:
     restart: always
-    image: redis:latest
+    image: redis:5.0.0
     expose:
       - "6379"
   
