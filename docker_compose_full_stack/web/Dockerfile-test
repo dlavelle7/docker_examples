@@ -1,7 +1,10 @@
 FROM python:3.4-alpine
 
 RUN mkdir -p /code
-COPY . /code/
 WORKDIR /code/dockering
 
-RUN pip install -r requirements_test.txt
+COPY dockering/requirements.txt dockering/requirements_test.txt /code/dockering/
+
+RUN pip3 install --upgrade pip && pip3 install -r requirements_test.txt
+
+COPY . /code/

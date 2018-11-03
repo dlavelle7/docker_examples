@@ -4,10 +4,10 @@ build:
 build-test:
 	@docker-compose -f docker-compose.test.yml build
 
-run:
+up:
 	@docker-compose up
 
-run-test:
+up-test:
 	@docker-compose -f docker-compose.test.yml up -d
 	@docker attach dockering_test
 
