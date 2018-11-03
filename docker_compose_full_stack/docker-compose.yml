@@ -51,9 +51,9 @@ services:
     # check db is accepting tcp connections
     healthcheck:
       test: "pg_isready -U postgres"
-      interval: 2s
+      interval: 8s
       timeout: 3s
-      retries: 8
+      retries: 3
   
   redis:
     restart: always
@@ -66,5 +66,3 @@ services:
     image: alpine
     volumes:
       - /var/lib/postgresql
-    # "true" will be a noop command, but will keep the container running
-    command: "true"
