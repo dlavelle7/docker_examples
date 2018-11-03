@@ -10,11 +10,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    links:
-      # containers of linked services are reachable via a hostname specified
-      # like: <linked_service_name>:<hostname_alias>
-      - postgres:postgres
-      - redis:redis
     env_file: live.env  # environment variables for web container in .env file
     volumes:
       - ./web:/web  # mount local file system to container file system
@@ -32,9 +27,6 @@ services:
     volumes_from:
       # load volumes from web container to serve static files for web app
       - web
-    links:
-      # see nginx site-enabled/dockering proxing requests to http://web:8000
-      - web:web
   
   postgres:
     restart: always
@@ -61,6 +53,7 @@ services:
     expose:
       - "6379"
   
+  # TODO: Volumes are not done right here
   data:
     restart: always
     image: alpine
