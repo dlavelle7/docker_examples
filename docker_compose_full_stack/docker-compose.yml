@@ -1,4 +1,4 @@
-version: "2.1"
+version: "2.3"
 services:
   web:
     build: ./web/  # use Dockerfile from directory
@@ -31,9 +31,11 @@ services:
   postgres:
     restart: always
     image: postgres:latest
-    volumes_from:
-      - data
     volumes:
+      # use "data" volume declared below for db data persistence
+      - type: volume
+        source: data
+        target: /var/lib/postgresql
       # the postgres:latest docker image auto loads all scripts in the
       # /docker-entrypoint-initdb.d dir. Initialize your DB here with a script
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d/
@@ -53,9 +55,6 @@ services:
     expose:
       - "6379"
   
-  # TODO: Volumes are not done right here
+# FIXME: db data not surviving docker-compose down
+volumes:
   data:
-    restart: always
-    image: alpine
-    volumes:
-      - /var/lib/postgresql
