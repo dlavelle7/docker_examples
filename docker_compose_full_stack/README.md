@@ -36,6 +36,6 @@ docker-compose -f docker-compose.test.yml build
 
 Run unit test containers (attach for interactive breakpoint):
 ```
-docker-compose -f docker-compose.test.yml up -d
+docker-compose -f docker-compose.test.yml up
 docker attach dockering_test
 ```
