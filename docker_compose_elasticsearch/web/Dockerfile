@@ -12,7 +12,7 @@ COPY search_engine/requirements.txt /web/search_engine/
 RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
 
 # Clean up packages that are only required for install to reduce image size
-RUN apk del -r python3-dev
+#RUN apk del -r python3-dev
 
 # Copy app source code near end so only one layer to be build on code change
 COPY . /web

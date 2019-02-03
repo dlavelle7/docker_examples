@@ -1,0 +1,6 @@
+version: "2.3"
+services:
+  # when used as an "override" compose file, will merge with docker-compose.yml
+  web:
+    stdin_open: true
+    tty: true
