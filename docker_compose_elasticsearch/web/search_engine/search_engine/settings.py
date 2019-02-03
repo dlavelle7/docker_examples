@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'country_search',
+    'bootstrap3',
 ]
 
 MIDDLEWARE = [
