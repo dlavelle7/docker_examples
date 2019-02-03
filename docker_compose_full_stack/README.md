@@ -9,19 +9,33 @@ Stack
 * Nginx
 * Gunicorn
 * Redis
-* Django
+* Django (REST framework)
 
-Run Application
----------------
-Docker compose commands wrapped in Makefile for convenience:
+Instructions
+------------
+
+Build application containers:
 ```
-make build
-make up
+docker compose build
 ```
 
-Run Tests
----------
+Run application containers:
 ```
-make build-test
-make up-test
+docker compose up
+```
+
+Drop a shell into the running web application container:
+```
+docker exec -it dockering_web /bin/sh
+```
+
+Build unit test containers:
+```
+docker-compose -f docker-compose.test.yml build
+```
+
+Run unit test containers (attach for interactive breakpoint):
+```
+docker-compose -f docker-compose.test.yml up -d
+docker attach dockering_test
 ```
