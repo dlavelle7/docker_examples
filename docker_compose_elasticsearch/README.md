@@ -6,6 +6,7 @@ Elasticsearch search engine.
 Stack
 -----
 * Alpine
+* Python 3.6
 * Django
 * Elasticsearch
 * Kibana

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Wait for elasticsearch to be ready, then run web app server
+
+# Taken from  Docker elasticsearch healthcheck:
+# https://github.com/docker-library/healthcheck/blob/master/elasticsearch/docker-healthcheck
+
+host=$ELASTICSEARCH_HOST
+port=$ELASTICSEARCH_PORT_NO
+
+retries="30"
+while [ $retries -gt 0 ]
+do
+    if health="$(curl -fsSL "http://${host}:${port}/_cat/health?h=status")"; then
+        # curl command succeeded, check elasticsearch health status
+        health="$(echo "$health" | sed -r 's/^[[:space:]]+|[[:space:]]+$//g')"
+        # elasticsearch status in dev mode will never be green as only 1 node exists
+        if [ "$health" = 'green' ] || [ "$health" = 'yellow' ]
+        then
+            echo "Elasticsearch ready to recieve connections"
+            break
+        fi
+        sleep 1
+        let "retries--"
+        echo "Elasticsearch not ready yet (health status: $health) - ${retries} left"
+    else
+        # curl command failed
+        sleep 1
+        let "retries--"
+        echo "Elasticsearch not reachable yet - ${retries} left"
+    fi
+done
+
+if [ $retries -eq 0 ]
+then
+    echo "Elasticsearch did not start correctly - no retries left."
+    exit 1
+fi
+
+# Run dev server for berivity (instead of nginx, etc.), really demoing Elasticsearch
+echo "Running web application."
+python3 manage.py runserver

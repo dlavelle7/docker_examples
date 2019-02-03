@@ -9,6 +9,7 @@ Stack
 * Nginx
 * Gunicorn
 * Redis
+* Python 3.6
 * Django (REST framework)
 
 Instructions

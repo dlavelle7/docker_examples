@@ -2,6 +2,18 @@ version: "2.3"
 services:
   # TODO: Kibana
   # TODO: Web app
+  web:
+    build: ./web/  # use Dockerfile from directory
+    env_file: search_engine.env
+    networks:
+      - country_search
+    ports:
+      # expose port 80 to host machine and target container port 8000 (which 
+      # django devserver is running on)
+      - "80:8000"
+    container_name: web
+    # wait for ES to be ready and run web app
+    entrypoint: /web/entrypoint
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     environment:
