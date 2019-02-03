@@ -46,6 +46,6 @@ fi
 echo "Checking search engine has data."
 python3 manage.py load_es_data
 
-# Run dev server for berivity (instead of nginx, etc.), really demoing Elasticsearch
-echo "Running web application."
-python3 manage.py runserver 0.0.0.0:8000
+# run gunicorn server with 2 worker processes on port 8000 in web container
+echo "Starting gunicorn server."
+gunicorn search_engine.wsgi:application -w 2 -b :8000
