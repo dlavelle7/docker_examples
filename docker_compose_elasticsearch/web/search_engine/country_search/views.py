@@ -3,4 +3,5 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the country search index.")
+    context = {}
+    return render(request, 'country_search/index.html', context)
