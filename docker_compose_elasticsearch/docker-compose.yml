@@ -1,6 +1,5 @@
 version: "2.3"
 services:
-  # TODO: Kibana
   web:
     build: ./web/  # use Dockerfile from directory
     env_file: search_engine.env

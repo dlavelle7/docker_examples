@@ -29,6 +29,11 @@ class SearchEngineConnection(object):
         }
 
     def search_all_countries(self):
-        res = self.connection.search(index=self.countries_index,
-                                     body={"query": {"match_all": {}}})
+        res = self.connection.search(
+            index=self.countries_index,
+            body={
+                "from": 0, "size": 400,
+                "query": {"match_all": {}},
+            }
+        )
         return [country["_source"] for country in res["hits"]["hits"]]
