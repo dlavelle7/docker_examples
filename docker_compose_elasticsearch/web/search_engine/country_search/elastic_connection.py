@@ -1,10 +1,12 @@
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 
+from django.conf import settings
+
 
 class SearchEngineConnection(object):
     """Singleton pattern to ensure only on elasticsearch connection is made."""
     _connection = None
-    host = "elastic"  # host name of docker container
+    countries_index = "countries"
 
     def __init__(self):
         self.connection = self.get_connection()

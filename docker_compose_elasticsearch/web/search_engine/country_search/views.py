@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.conf import settings
 
 from .elastic_connection import SearchEngineConnection
 
+es = SearchEngineConnection().connection
+
 
 def index(request):
-    es = SearchEngineConnection().connection
-    res = es.search(index="countries", body={"query": {"match_all": {}}})
+    res = es.search(index=SearchEngineConnection.countries_index,
+                    body={"query": {"match_all": {}}})
     context = {"countries": res}
     return render(request, 'country_search/index.html', context)

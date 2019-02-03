@@ -37,6 +37,11 @@ then
     exit 1
 fi
 
+
+# First, check if elasticsearch data needs to be populated
+echo "Checking search engine has data."
+python3 manage.py load_es_data
+
 # Run dev server for berivity (instead of nginx, etc.), really demoing Elasticsearch
 echo "Running web application."
 python3 manage.py runserver 0.0.0.0:8000
