@@ -11,6 +11,8 @@ services:
       postgres:
         condition: service_healthy
     env_file: live.env  # environment variables for web container in .env file
+    networks:
+      - dockering_net
     volumes:
       - ./web:/web  # mount local file system to container file system
       - /staticfiles  # collect static will copy static files to here
@@ -24,6 +26,8 @@ services:
       # expose port 80 to host machine and target container port 80 (which 
       # nginx listens on for requests)
       - "80:80"
+    networks:
+      - dockering_net
     volumes_from:
       # load volumes from web container to serve static files for web app
       - web
@@ -45,16 +49,24 @@ services:
     # check db is accepting tcp connections
     healthcheck:
       test: "pg_isready -U postgres"
-      interval: 8s
+      interval: 10s
       timeout: 3s
       retries: 3
+    networks:
+      - dockering_net
   
   redis:
     restart: always
     image: redis:5.0.0
     expose:
       - "6379"
+    networks:
+      - dockering_net
   
 volumes:
   # volume for db data persistence
   data:
+
+networks:
+  # good practice to have a dedicated network rather than using default
+  dockering_net:
