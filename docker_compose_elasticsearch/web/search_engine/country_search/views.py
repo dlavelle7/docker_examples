@@ -8,6 +8,10 @@ connection = SearchEngineConnection()
 
 def index(request):
     # TODO: Implement country search
-    countries = connection.search_all_countries()
+    search_term = request.GET.get("search")
+    if search_term is not None:
+        countries = connection.search_all_countries()
+    else:
+        countries = None
     context = {"countries": countries}
     return render(request, 'country_search/index.html', context)
