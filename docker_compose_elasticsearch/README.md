@@ -28,3 +28,9 @@ Run the application containers with a pdb interactive breakpoint:
 docker-compose -f docker-compose.yml -f docker-compose.pdb.yml up --build
 docker attach web
 ```
+
+Kibana
+------
+Once the application containers have been brought up, you can view the
+Elasticsearch data store via the Kibana UI by opening this
+url: `http://localhost:5601`.
