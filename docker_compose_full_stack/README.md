@@ -29,12 +29,12 @@ Drop a shell into the running web application container:
 docker exec -it dockering_web /bin/sh
 ```
 
-Build unit test containers:
+Build unit test container:
 ```
 docker-compose -f docker-compose.test.yml build
 ```
 
-Run unit test containers (attach for interactive breakpoint):
+Run unit test container (attach for interactive breakpoint):
 ```
 docker-compose -f docker-compose.test.yml up
 docker attach dockering_test
