@@ -1,1 +1,7 @@
-{{countries}}
+{% comment %} TODO: Bootstrap (loadboostrap) {% endcomment %}
+<table>
+{% for country in countries %}
+<tr>
+    <td>{{country.name}}</td>
+</tr>
+{% endfor %}

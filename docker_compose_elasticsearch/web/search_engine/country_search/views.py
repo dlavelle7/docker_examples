@@ -3,11 +3,11 @@ from django.http import HttpResponse
 
 from .elastic_connection import SearchEngineConnection
 
-es = SearchEngineConnection().connection
+connection = SearchEngineConnection()
 
 
 def index(request):
-    res = es.search(index=SearchEngineConnection.countries_index,
-                    body={"query": {"match_all": {}}})
-    context = {"countries": res}
+    # TODO: Implement country search
+    countries = connection.search_all_countries()
+    context = {"countries": countries}
     return render(request, 'country_search/index.html', context)

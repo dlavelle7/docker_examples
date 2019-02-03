@@ -14,10 +14,14 @@ services:
     # wait for ES to be ready and run web app
     entrypoint: /web/entrypoint
   elastic:
+    # TODO: use data volume to persist search engine data
     image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
     environment:
       - discovery.type=single-node
     networks:
       - country_search
+volumes:
+  # volume for search engine data persistence
+  data:
 networks:
   country_search:
