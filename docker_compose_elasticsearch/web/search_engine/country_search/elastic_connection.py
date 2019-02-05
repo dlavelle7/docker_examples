@@ -10,6 +10,7 @@ class SearchEngineConnection(object):
     country_doc = "country"
 
     def __init__(self):
+        # TODO: Maybe rename this es
         self.connection = self.get_connection()
 
     @classmethod
@@ -36,4 +37,13 @@ class SearchEngineConnection(object):
                 "query": {"match_all": {}},
             }
         )
+        return [country["_source"] for country in res["hits"]["hits"]]
+
+    def basic_country_search(self, search_term):
+        query = {
+            "query": {
+                "term": {"name": search_term}
+            }
+        }
+        res = self.connection.search(index=self.countries_index, body=query)
         return [country["_source"] for country in res["hits"]["hits"]]

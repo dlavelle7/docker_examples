@@ -12,6 +12,8 @@ services:
     container_name: web
     # wait for ES to be ready and run web app
     entrypoint: /web/entrypoint
+    depends_on:
+      - elastic
   elastic:
     # TODO: use data volume to persist search engine data
     image: docker.elastic.co/elasticsearch/elasticsearch:6.6.0
@@ -28,6 +30,8 @@ services:
       - country_search
     ports:
       - "5601:5601"
+    depends_on:
+      - elastic
 volumes:
   # volume for search engine data persistence
   data:

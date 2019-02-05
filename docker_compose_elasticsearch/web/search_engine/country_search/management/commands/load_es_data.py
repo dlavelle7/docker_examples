@@ -15,6 +15,8 @@ class Command(BaseCommand):
             print("Countries index exists, nothing to do here.")
             return
         print("Countries index doesn't exist, creating . . .")
+        # TODO: Bulk create
+        # TODO: Move this to connection.py
         es.indices.delete(index=SearchEngineConnection.countries_index,
                           ignore=[400, 404])
         es.indices.create(index=SearchEngineConnection.countries_index)
