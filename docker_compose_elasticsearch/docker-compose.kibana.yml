@@ -1,0 +1,15 @@
+version: "2.3"
+services:
+  # put kibana in it's own compose file as you might not want it in pdb mode
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.6.0
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_HOSTS: http://elastic:9200
+    networks:
+      - country_search
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elastic
+

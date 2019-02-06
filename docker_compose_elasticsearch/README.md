@@ -31,6 +31,11 @@ docker attach web
 
 Kibana
 ------
+Run the application containers with a Kibana container:
+```
+docker-compose -f docker-compose.yml -f docker-compose.kibana.yml up --build
+```
+
 Once the application containers have been brought up, you can view the
 Elasticsearch data store via the Kibana UI by opening this
 url: `http://localhost:5601`.

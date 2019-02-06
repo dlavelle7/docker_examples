@@ -29,21 +29,33 @@ class SearchEngineConnection(object):
             "iso_3": iso_3,
         }
 
+    def get_hits(self, result):
+        return [country["_source"] for country in res["hits"]["hits"]]
+
     def search_all_countries(self):
+        query = {
+            "from": 0,
+            "size": 400,
+            "query": {
+                "match_all": {}
+            }
+        }
         res = self.connection.search(
             index=self.countries_index,
-            body={
-                "from": 0, "size": 400,
-                "query": {"match_all": {}},
-            }
+            body=query,
         )
-        return [country["_source"] for country in res["hits"]["hits"]]
+        return self.get_hits(res)
 
     def basic_country_search(self, search_term):
         query = {
             "query": {
-                "term": {"name": search_term}
+                "match": {
+                    "name": {
+                        "query": search_term,
+                        "fuzziness": "AUTO",
+                    }
+                }
             }
         }
         res = self.connection.search(index=self.countries_index, body=query)
-        return [country["_source"] for country in res["hits"]["hits"]]
+        return self.get_hits(res)

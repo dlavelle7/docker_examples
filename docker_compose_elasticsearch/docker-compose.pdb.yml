@@ -4,5 +4,4 @@ services:
   web:
     stdin_open: true
     tty: true
-    # TODO: entrypont runserver so breakpoints can be used (seg fault)
-    #entrypoint: "python3 manage.py load_es_data"
+    entrypoint: "python3 manage.py runserver 0.0.0.0:8000"

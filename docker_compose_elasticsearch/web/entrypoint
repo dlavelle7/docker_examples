@@ -37,10 +37,9 @@ then
     exit 1
 fi
 
-# TODO: Is this needed?
 # Run django migrations for INSTALLED_APPS
-#echo "Running django migrations."
-#python3 manage.py migrate
+echo "Running django migrations."
+python3 manage.py migrate
 
 # First, check if elasticsearch data needs to be populated
 echo "Checking search engine has data."
