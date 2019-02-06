@@ -29,7 +29,7 @@ class SearchEngineConnection(object):
             "iso_3": iso_3,
         }
 
-    def get_hits(self, result):
+    def get_hits(self, res):
         return [country["_source"] for country in res["hits"]["hits"]]
 
     def search_all_countries(self):
