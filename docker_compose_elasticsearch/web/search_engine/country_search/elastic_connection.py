@@ -5,21 +5,20 @@ from django.conf import settings
 
 class SearchEngineConnection(object):
     """Singleton pattern to ensure only on elasticsearch connection is made."""
-    _connection = None
+    _es = None
     countries_index = "countries"
     country_doc = "country"
 
     def __init__(self):
-        # TODO: Maybe rename this es
-        self.connection = self.get_connection()
+        self.es = self.get_es_connection()
 
     @classmethod
-    def get_connection(cls):
-        if SearchEngineConnection._connection is None:
-            SearchEngineConnection._connection = Elasticsearch(
+    def get_es_connection(cls):
+        if SearchEngineConnection._es is None:
+            SearchEngineConnection._es = Elasticsearch(
                 settings.ELASTICSEARCH_HOST,
                 connection_class=RequestsHttpConnection)
-        return SearchEngineConnection._connection
+        return SearchEngineConnection._es
 
     @staticmethod
     def get_country_body(country_name, iso_2, iso_3):
@@ -40,7 +39,7 @@ class SearchEngineConnection(object):
                 "match_all": {}
             }
         }
-        res = self.connection.search(
+        res = self.es.search(
             index=self.countries_index,
             body=query,
         )
@@ -57,5 +56,5 @@ class SearchEngineConnection(object):
                 }
             }
         }
-        res = self.connection.search(index=self.countries_index, body=query)
+        res = self.es.search(index=self.countries_index, body=query)
         return self.get_hits(res)

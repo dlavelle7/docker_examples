@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from country_search.elastic_connection import SearchEngineConnection
 
-es = SearchEngineConnection().connection
+es = SearchEngineConnection().es
 
 
 class Command(BaseCommand):
