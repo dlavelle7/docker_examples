@@ -22,6 +22,7 @@ class SearchEngineConnection(object):
 
     @staticmethod
     def get_country_body(country_name, iso_2, iso_3):
+        # TODO: Mappings (types, etc.)
         return {
             "name": country_name,
             "iso_2": iso_2,
@@ -46,13 +47,44 @@ class SearchEngineConnection(object):
         return self.get_hits(res)
 
     def basic_country_search(self, search_term):
+        """Search country query.
+
+        Matching Priority:
+        1. Match country names starting with term
+        2. Match country names containing exact term
+        3. Fuzzy match country names containing term
+        """
         query = {
             "query": {
-                "match": {
-                    "name": {
-                        "query": search_term,
-                        "fuzziness": "AUTO",
-                    }
+                "bool": {
+                    # If there are is no must clause, then at least one
+                    # should clause has to match (default minimum_should_match)
+                    "should": [
+                        {
+                            "match_phrase_prefix": {
+                                "name": {
+                                    "query": search_term,
+                                    "boost": 4,
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "name": {
+                                    "query": search_term,
+                                    "boost": 2,
+                                }
+                            }
+                        },
+                        {
+                            "match": {
+                                "name": {
+                                    "query": search_term,
+                                    "fuzziness": "AUTO",
+                                }
+                            }
+                        },
+                    ]
                 }
             }
         }

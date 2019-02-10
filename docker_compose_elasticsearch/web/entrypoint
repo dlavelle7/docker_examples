@@ -8,7 +8,7 @@
 host=$ELASTICSEARCH_HOST
 port=$ELASTICSEARCH_PORT_NO
 
-retries="30"
+retries="40"
 while [ $retries -gt 0 ]
 do
     if health="$(curl -fsSL "http://${host}:${port}/_cat/health?h=status")"; then
