@@ -23,9 +23,11 @@ Run the application containers:
 docker compose up
 ```
 
-Run the application containers with a pdb interactive breakpoint:
+Run the application containers in "dev"; mode which mounts the web app source
+code to the container, uses the Django devserver and allows for interative
+breakpoints:
 ```
-docker-compose -f docker-compose.yml -f docker-compose.pdb.yml up --build
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 docker attach web
 ```
 

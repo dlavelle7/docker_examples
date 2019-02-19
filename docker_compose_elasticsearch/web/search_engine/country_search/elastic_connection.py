@@ -22,6 +22,8 @@ class SearchEngineConnection(object):
 
     @staticmethod
     def get_country_body(country_name, iso_2, iso_3):
+        # TODO: Custom analyser that filters (stop_word) "of"
+        # slide 216 - (not standard english stop_word)
         # TODO: Mappings (types, etc.)
         return {
             "name": country_name,
@@ -54,6 +56,8 @@ class SearchEngineConnection(object):
         2. Match country names containing exact term
         3. Fuzzy match country names containing term
         """
+        # TODO: Could do exact match with keyword ("name.keyword") and boost that highest
+        # TODO: "Ideal text search" - ES Slides line 159
         query = {
             "query": {
                 "bool": {
@@ -69,6 +73,7 @@ class SearchEngineConnection(object):
                             }
                         },
                         {
+                            # TODO: operator "and" (default is "or")
                             "match": {
                                 "name": {
                                     "query": search_term,

@@ -15,6 +15,7 @@ class Command(BaseCommand):
             print("Countries index exists, nothing to do here.")
             return
         print("Countries index doesn't exist, creating . . .")
+        # TODO: Never refer to index by name, use an alias
         # TODO: Bulk create
         conn.es.indices.delete(index=conn.countries_index, ignore=[400, 404])
         conn.es.indices.create(index=conn.countries_index)

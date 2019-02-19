@@ -8,6 +8,7 @@
 host=$ELASTICSEARCH_HOST
 port=$ELASTICSEARCH_PORT_NO
 
+# TODO: /health ES endpoint has a wait_until & timeout option
 retries="40"
 while [ $retries -gt 0 ]
 do

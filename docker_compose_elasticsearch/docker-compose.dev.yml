@@ -2,6 +2,8 @@ version: "2.3"
 services:
   # when used as an "override" compose file, will merge with docker-compose.yml
   web:
+    volumes:
+      - ./web:/web
     stdin_open: true
     tty: true
     entrypoint: "python3 manage.py runserver 0.0.0.0:8000"
